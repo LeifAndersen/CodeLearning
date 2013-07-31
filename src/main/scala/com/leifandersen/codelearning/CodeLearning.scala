@@ -104,7 +104,7 @@ object CodeLearning extends App {
 
     // Bad
     print("Collecting Bad Samples...")
-    for(i <- 0 until 1) {
+    for(i <- 0 until 2) {
       file2database("bad-mutex-" + i + ".txt", base, false, 20, functions)
     }
     println("OK")
@@ -187,15 +187,26 @@ object CodeLearning extends App {
         """
       }
 
+      var firstInChain = true
       for(transitionNumber <- 0 until automaton.getTransitions.size) {
         val transition = BasicTransition2Tuple(automaton.getTransitions.get(transitionNumber))
         if(transition._2 == state) {
-          s += """
-            if(this->dfaState == """ + transition._1 + """) {
-              cout << "Changing state from: """ + transition._1 + """ to: """ + transition._3 + """ Recieved: """ + methodName + """ " << endl;
-              this->dfaState = """ + transition._3 + """;
-            }
-          """
+          if(firstInChain) {
+            s += """
+              if(this->dfaState == """ + transition._1 + """) {
+                cout << "Changing state from: """ + transition._1 + """ to: """ + transition._3 + """ Recieved: """ + methodName + """ " << endl;
+                this->dfaState = """ + transition._3 + """;
+              }
+            """
+            firstInChain = false
+          } else {
+            s += """
+              else if(this->dfaState == """ + transition._1 + """) {
+                cout << "Changing state from: """ + transition._1 + """ to: """ + transition._3 + """ Recieved: """ + methodName + """ " << endl;
+                this->dfaState = """ + transition._3 + """;
+              }
+            """
+          }
         }
       }
 
@@ -239,6 +250,8 @@ object CodeLearning extends App {
   }
 
   var autamaton = generateAutomaton()
-  println(generateCode(autamaton, MutexFunction))
+  var code = generateCode(autamaton, MutexFunction)
+  println(code)
+  Some(new PrintWriter("stepper.h")).foreach{p => p.write(code); p.close}
   dotify(autamaton)
 }

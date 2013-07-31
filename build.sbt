@@ -1,4 +1,4 @@
-name := "DWLearning"
+name := "CodeLearning"
 
 sourceDirectories in Compile += file("src")
 
