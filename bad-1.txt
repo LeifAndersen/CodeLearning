@@ -1,0 +1,16 @@
+learning:0:getDatItem(0x1e1d470,-1,0x1e17990);
+learning:2:get(0x1e14490,1,0x1e178b0);
+learning:2:getDatItem(0x1e14490,1,0x1e178b0);
+learning:10:get(0x1e14760,0,0x1e178b0,0x2156c40);
+learning:10:get(0x1e14760,0,0x1e178b0);
+learning:10:getDatItem(0x1e14760,0,0x1e178b0);
+learning:10:exists(0x1e1b6f0,0,0x1e178b0);
+learning:10:get(0x1e1b6f0,0,0x1e178b0,0x2156c40);
+learning:10:get(0x1e1b6f0,0,0x1e178b0);
+learning:10:getDatItem(0x1e1b6f0,0,0x1e178b0);
+learning:10:exists(0x1e1bd80,0,0x1e178b0);
+learning:10:get(0x1e1bd80,0,0x1e178b0,0x2156c40);
+learning:10:get(0x1e1bd80,0,0x1e178b0);
+learning:1:exists(0x1e114e0,0,0x1e178b0);
+learning:1:put(0x1e114e0,0,0x1e178b0,0x2048ea0,0);
+learning:1:get(0x1111111,2,0x2222222)
