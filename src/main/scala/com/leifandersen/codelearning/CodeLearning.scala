@@ -244,6 +244,52 @@ object CodeLearning extends App {
     return s;
   }
 
+  def generateDot(automaton: BasicAutomaton, functions: CodeFunction): String= {
+    val startState = automaton.getInitialStates.iterator.next
+    var s = """
+    digraph finite_automaton {
+    graph[fontsize=8]
+    rankdir=LR;
+    size=8;
+    """;
+
+    for(state <- 0 until automaton.getNumberOfStates) {
+      var finalStates = automaton.getFinalStates.toArray
+      var finalState = false
+      for(i <- 0 until finalStates.size) {
+        if(state == finalStates(i)) {
+          finalState = true
+        }
+      }
+      if(finalState) {
+        s += """
+        node [shape=doublecircle, style="", color=black]; q""" + state + """;
+        """
+      } else {
+        s += """
+        node [shape=circle, style="", color=black]; q""" + state + """;
+        """
+      }
+    }
+    s += """
+    node [shape=plaintext, label="", style=""]; iq0;
+    """
+
+    for(transitionNumber <- 0 until automaton.getTransitions.size) {
+      val transition = BasicTransition2Tuple(automaton.getTransitions.get(transitionNumber))
+      val methodName = word2line(transition._2, functions)
+      s += """
+      q""" + transition._1 + """ -> q""" + transition._3 + """ [label=" """ + methodName + """ "];
+      """
+    }
+
+    s += """
+    iq0 -> q""" + startState + """ [color=blue];
+    }
+    """
+    return s;
+  }
+
   def dotify(automaton: BasicAutomaton) {
     Some(new PrintWriter("out.dot")).foreach{p => p.write(automaton.toDot); p.close}
     //Process("dot", Seq("-Tpdf out.dot > out.pdf")).!!
@@ -254,4 +300,7 @@ object CodeLearning extends App {
   println(code)
   Some(new PrintWriter("stepper.h")).foreach{p => p.write(code); p.close}
   dotify(autamaton)
+  var nicerGraph = generateDot(autamaton, MutexFunction)
+  println(nicerGraph)
+  Some(new PrintWriter("out2.dot")).foreach{p => p.write(nicerGraph); p.close}
 }
