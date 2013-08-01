@@ -65,7 +65,7 @@ object DWFunction extends CodeFunction {
     case 11                         => "initializeScrubs"
     case 12                         => "logMemoryUse"
     case 13                         => "getVarLabelMatlTriples"
-    case _                          => "error\n"
+    case _                          => "error"
   }
 
 }
