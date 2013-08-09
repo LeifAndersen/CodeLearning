@@ -49,11 +49,11 @@ object CodeLearning extends App {
     var sum = functions.code2word(command(0))
     var multiplier = 100
     for(arguement <- arguements) {
-//      sum += functions.code2word(arguement)*multiplier
+      sum += functions.code2word(arguement)*multiplier
       multiplier += 100
     }
-//    return List(sum)
-    return List(functions.code2word(command(0)))
+    return List(sum)
+    //return List(functions.code2word(command(0)))
   }
 
   def command2word(in: String, functions: CodeFunction): List[Int] = {
@@ -112,7 +112,7 @@ object CodeLearning extends App {
     // Run
     print("Setting Algorithm...")
     var algorithm = factory.createLearningAlgorithm(Algorithm.RPNI, base,
-                                                    new Integer(alphabetSize))
+                                                    new java.lang.Integer(alphabetSize))
     println("OK")
     print("Generating Automaton...")
     var automaton = algorithm.advance().asInstanceOf[BasicAutomaton]
