@@ -43,14 +43,12 @@ object CodeLearning extends App {
   }
 
   def line2word(in: String, functions: CodeFunction): List[Int] = {
-    var command = in.split('(')
-    var arguementString = command(1).split(')')
-    var arguements = arguementString(0).split(',')
-    var sum = functions.code2word(command(0))
-    var multiplier = 100
-    for(arguement <- arguements) {
+    var line = CallParser(in)
+    var sum = 0
+    val multiplier = 1
+    for(arguement <- line) {
       sum += functions.code2word(arguement)*multiplier
-      multiplier += 100
+      multiplier *= 100
     }
     return List(sum)
     //return List(functions.code2word(command(0)))

@@ -1,11 +1,29 @@
 package com.leifandersen.codelearning
 
-object CallParser extends RegexParser {
+import scala.util.parsing.combinator
+import scala.util.parsing.combinator._
 
-  def term : Parser[String] = "[^(),; ]".r ^^ _
+object CallParser extends RegexParsers {
 
-  def expr : Parser[List[String]] = token ~ "(" ~ rep(token ~ ",") ~ ")" ~ ";" ^^ {
-    case 
+  def term : Parser[String] = "[a-zA-Z][a-zA-Z0-9]*".r
+
+  def arguement : Parser[String] = "," ~ term ^^ {
+    case _ ~ term => term
+  }
+
+  def arguements : Parser[List[String]] = term ~ rep(arguement) ^^ {
+    case term ~ arguements => term +: arguements
+
+  }
+
+  def expr : Parser[List[String]] = term ~ "(" ~ opt(arguements) ~ ")" ~ ";" ^^ {
+    case term ~ _ ~ arguements ~ _ ~ _ => {
+      if(arguements.isEmpty) {
+        List(term)
+      } else {
+        term +: arguements.orNull
+      }
+    }
   }
 
   def apply(input: String): List[String] = parseAll(expr, input) match {
