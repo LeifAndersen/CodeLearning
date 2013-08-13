@@ -5,7 +5,7 @@ import scala.util.parsing.combinator._
 
 object CallParser extends RegexParsers {
 
-  def term : Parser[String] = "[a-zA-Z][a-zA-Z0-9]*".r
+  def term : Parser[String] = "[a-zA-Z0-9:~]*".r
 
   def arguement : Parser[String] = "," ~ term ^^ {
     case _ ~ term => term
@@ -13,7 +13,6 @@ object CallParser extends RegexParsers {
 
   def arguements : Parser[List[String]] = term ~ rep(arguement) ^^ {
     case term ~ arguements => term +: arguements
-
   }
 
   def expr : Parser[List[String]] = term ~ "(" ~ opt(arguements) ~ ")" ~ ";" ^^ {
@@ -21,7 +20,11 @@ object CallParser extends RegexParsers {
       if(arguements.isEmpty) {
         List(term)
       } else {
-        term +: arguements.orNull
+        if(arguements.orNull.size == 0 || arguements.get(0) == "") {
+          List(term)
+        } else {
+          term +: arguements.orNull
+        }
       }
     }
   }

@@ -43,12 +43,13 @@ object CodeLearning extends App {
   }
 
   def line2word(in: String, functions: CodeFunction): List[Int] = {
+    val wordSize = functions.wordSize
     var line = CallParser(in)
     var sum = 0
-    val multiplier = 1
+    var multiplier = 1
     for(arguement <- line) {
       sum += functions.code2word(arguement)*multiplier
-      multiplier *= 100
+      multiplier *= wordSize
     }
     return List(sum)
     //return List(functions.code2word(command(0)))
@@ -61,20 +62,21 @@ object CodeLearning extends App {
 
 
   def word2line(in: Int, functions: CodeFunction): String = {
-    var number = in%100
-    var command = functions.word2code(number)
-    number /=100
+    val wordSize = functions.wordSize
+    var number = in
+    var command = functions.word2code(number%wordSize)
+    number /= wordSize
     command += "("
     while (number > 0) {
-      command += number%100
-      number /= 100
+      command += functions.word2code(number%wordSize)
+      number /= wordSize
       if(number > 0) {
         command += ","
       }
     }
     command += ");"
-    //return command
-    return functions.word2code(in)
+    return command
+    //return functions.word2code(in)
   }
 
   def generateAutomaton(): BasicAutomaton = {

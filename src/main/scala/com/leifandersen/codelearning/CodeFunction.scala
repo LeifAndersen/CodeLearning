@@ -13,4 +13,5 @@ import de.libalf.jni.JNIFactory
 trait CodeFunction {
   def code2word(in: String): Int
   def word2code(in: Int): String
+  def wordSize: Int
 }

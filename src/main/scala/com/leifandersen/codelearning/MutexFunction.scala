@@ -20,7 +20,7 @@ object MutexFunction extends CodeFunction {
     case "tryLock"                  => 4
     case _                          => {
       printf("Invalid function: %s\n", in)
-      return 16
+      return 5
     }
   }
 
@@ -32,4 +32,6 @@ object MutexFunction extends CodeFunction {
     case 4 => "tryLock"
     case _ => "error"
   }
+
+  def wordSize: Int = 6
 }
