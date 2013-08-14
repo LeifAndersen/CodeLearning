@@ -16,14 +16,13 @@ object CallParser extends RegexParsers {
   }
 
   def expr : Parser[List[String]] = term ~ "(" ~ opt(arguements) ~ ")" ~ ";" ^^ {
-    case term ~ _ ~ arguements ~ _ ~ _ => {
-      if(arguements.isEmpty) {
-        List(term)
-      } else {
-        if(arguements.orNull.size == 0 || arguements.get(0) == "") {
+    case term ~ _ ~ arguements ~ _ ~ _ => arguements match {
+      case None => List(term)
+      case Some(a) => {
+        if(a.size == 0 || a(0) == "") {
           List(term)
         } else {
-          term +: arguements.orNull
+          term +: a
         }
       }
     }
